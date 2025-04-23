@@ -472,10 +472,9 @@ with main_container:
                     for col in correct_column_order:
                         if col not in input_df.columns:
                             input_df[col] = 0
+                            input_df = input_df[correct_column_order]
 
-                    # Select only columns that exist in the input_df
-                    valid_columns = [col for col in correct_column_order if col in input_df.columns]
-                    input_df = input_df[valid_columns]
+                    
 
                     # === Predict Price ===
                     if model is not None:
