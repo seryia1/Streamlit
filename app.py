@@ -114,7 +114,7 @@ elif current_page == "calculator":
     # === Load Data and Model ===
     df = pd.read_csv('Electric_cars_dataset.csv')
     with open("svr_model.pkl", "rb") as f:
-    model = pk.load(f)
+        model = pk.load(f)
 
     df.columns = df.columns.str.replace(' ', '_')
 
