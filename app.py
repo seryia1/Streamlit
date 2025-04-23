@@ -40,9 +40,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# === GET PAGE FROM URL (Safe & Streamlit 1.32+ compatible) ===
-query_params = st.query_params
-current_page = query_params["page"][0] if "page" in query_params else "overview"
+# === GET PAGE FROM URL ===
+query_params = st.experimental_get_query_params()
+current_page = query_params.get("page", ["overview"])[0]
 
 
 # === PAGE CONTENT ===
