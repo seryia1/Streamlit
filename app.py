@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle 
+import joblib 
 from pathlib import Path
 
 
@@ -117,9 +117,8 @@ elif current_page == "calculator":
     
      
 
-    model_path = 'svr_model.pkl'              
-    with open(model_path, "rb") as f:
-        model = pickle.load(f)
+    
+    model = joblib.load('svr_model.pkl')
 
 
     df.columns = df.columns.str.replace(' ', '_')
