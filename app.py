@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle as pk
+import joblib
 
 
 # === PAGE SETUP ===
@@ -113,7 +113,7 @@ elif current_page == "calculator":
 
     # === Load Data and Model ===
     df = pd.read_csv('Electric_cars_dataset.csv')
-    model = pk.load("svr_model.pkl")
+    model = joblib.load("svr_model.pkl")
 
     df.columns = df.columns.str.replace(' ', '_')
 
