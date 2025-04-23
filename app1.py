@@ -6,9 +6,9 @@ from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, StandardScaler
 
 # === PAGE SETUP ===
 st.set_page_config(layout="wide", page_title="Car Price Analysis & Prediction App")
-# === PAGE SELECTOR ===
-st.sidebar.title("Navigation")
-current_page = st.sidebar.radio("Go to", ["home", "calculator", "about"])
+# === GET PAGE FROM URL ===
+query_params = st.experimental_get_query_params()
+current_page = query_params.get("page", ["overview"])[0]
 # === CUSTOM CSS FOR DARK THEME ===
 st.markdown("""
 <style>
