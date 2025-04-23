@@ -429,184 +429,51 @@ with main_container:
                 })
                 
                 try:
-                    # === Frequency Encoding ===
+                     # === Frequency Encoding ===
                     for col in freq_cols:
                         mapping = df[col].value_counts().to_dict()
                         input_df[col + '_freq'] = input_df[col].map(mapping).fillna(0)
-                    
+
                     freq_scaled = MinMaxScaler()
                     input_df[[col + '_freq' for col in freq_cols]] = freq_scaled.fit_transform(input_df[[col + '_freq' for col in freq_cols]])
                     input_df.drop(columns=freq_cols, inplace=True)
-                    
+
                     # === One-Hot Encoding ===
                     encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
                     encoded_array = encoder.fit(df[onehot_cols]).transform(input_df[onehot_cols])
                     encoded_df = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(onehot_cols))
-                    
+
                     input_df = input_df.drop(columns=onehot_cols).reset_index(drop=True)
                     encoded_df = encoded_df.reset_index(drop=True)
                     input_df = pd.concat([input_df, encoded_df], axis=1)
-                    
+
                     # === Scaling ===
                     scaler = StandardScaler()
                     input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
-                    
-                     # === Reorder Columns ===
-                    correct_column_order = ['Model_Year','Electric_Range','County_freq','Electric_Utility_freq','Legislative_District_freq','City_freq','Make_AUDI','Make_AZURE DYNAMICS',
-    'Make_BENTLEY',
-    'Make_BMW',
-    'Make_CADILLAC',
-    'Make_CHEVROLET',
-    'Make_CHRYSLER',
-    'Make_DODGE',
-    'Make_FIAT',
-    'Make_FISKER',
-    'Make_FORD',
-    'Make_HONDA',
-    'Make_HYUNDAI',
-    'Make_JAGUAR',
-    'Make_JEEP',
-    'Make_KIA',
-    'Make_LAND ROVER',
-    'Make_LINCOLN',
-    'Make_MERCEDES-BENZ',
-    'Make_MINI',
-    'Make_MITSUBISHI',
-    'Make_NISSAN',
-    'Make_POLESTAR',
-    'Make_PORSCHE',
-    'Make_SMART',
-    'Make_SUBARU',
-    'Make_TESLA',
-    'Make_TH!NK',
-    'Make_TOYOTA',
-    'Make_VOLKSWAGEN',
-    'Make_VOLVO',
-    'Make_WHEEGO ELECTRIC CARS',
-    'Model_$16.36K',
-    'Model_330E',
-    'Model_500',
-    'Model_530E',
-    'Model_530E XDRIVE',
-    'Model_740E XDRIVE',
-    'Model_745E',
-    'Model_918 SPYDER',
-    'Model_A3',
-    'Model_A7',
-    'Model_A8 E',
-    'Model_ACCORD',
-    'Model_AVIATOR',
-    'Model_B-CLASS',
-    'Model_BENTAYGA',
-    'Model_BOLT EV',
-    'Model_C-CLASS',
-    'Model_C-MAX',
-    'Model_CARAVAN',
-    'Model_CAYENNE',
-    'Model_CITY',
-    'Model_CLARITY',
-    'Model_CORSAIR',
-    'Model_COUNTRYMAN',
-    'Model_CROSSTREK HYBRID AWD',
-    'Model_CT6',
-    'Model_E-GOLF',
-    'Model_E-TRON',
-    'Model_E-TRON SPORTBACK',
-    'Model_ELR',
-    'Model_EQ FORTWO',
-    'Model_ESCAPE',
-    'Model_FOCUS',
-    'Model_FORTWO',
-    'Model_FORTWO ELECTRIC DRIVE',
-    'Model_FUSION',
-    'Model_GLC-CLASS',
-    'Model_GLE-CLASS',
-    'Model_HARDTOP',
-    'Model_I-MIEV',
-    'Model_I-PACE',
-    'Model_I3',
-    'Model_I8',
-    'Model_IONIQ',
-    'Model_KARMA',
-    'Model_KONA',
-    'Model_LEAF',
-    'Model_LIFE',
-    'Model_MODEL 3',
-    'Model_MODEL S',
-    'Model_MODEL X',
-    'Model_MODEL Y',
-    'Model_NIRO',
-    'Model_NIRO ELECTRIC',
-    'Model_NIRO PLUG-IN HYBRID',
-    'Model_OPTIMA',
-    'Model_OPTIMA PLUG-IN HYBRID',
-    'Model_OUTLANDER',
-    'Model_PACIFICA',
-    'Model_PANAMERA',
-    'Model_PRIUS PLUG-IN',
-    'Model_PRIUS PLUG-IN HYBRID',
-    'Model_PRIUS PRIME',
-    'Model_PS2',
-    'Model_Q5',
-    'Model_Q5 E',
-    'Model_RANGE ROVER',
-    'Model_RANGE ROVER SPORT',
-    'Model_RANGER',
-    'Model_RAV4',
-    'Model_RAV4 PRIME',
-    'Model_ROADSTER',
-    'Model_S-CLASS',
-    'Model_S60',
-    'Model_S90',
-    'Model_SANTA FE',
-    'Model_SONATA',
-    'Model_SONATA PLUG-IN HYBRID',
-    'Model_SORENTO',
-    'Model_SOUL',
-    'Model_SOUL EV',
-    'Model_SPARK',
-    'Model_TAYCAN',
-    'Model_TRANSIT CONNECT ELECTRIC',
-    'Model_TUCSON',
-    'Model_VOLT',
-    'Model_WRANGLER',
-    'Model_X3',
-    'Model_X5',
-    'Model_XC60',
-    'Model_XC60 AWD',
-    'Model_XC60 AWD PHEV',
-    'Model_XC90',
-    'Model_XC90 AWD',
-    'Model_XC90 AWD PHEV',
-    'Electric_Vehicle_Type_Battery Electric Vehicle (BEV)',
-    'Electric_Vehicle_Type_Plug-in Hybrid Electric Vehicle (PHEV)',
-    'Electric_Vehicle_Type_nan',
-    'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_Clean Alternative Fuel Vehicle Eligible',
-    'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_Not eligible due to low battery range',
-    'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan']  # Replace with your full list as shown earlier
 
-                for col in correct_column_order:
-                    if col not in input_df.columns:
-                        input_df[col] = 0
-                        input_df = input_df[correct_column_order]
-                    
-  # === Predict Price ===
-if current_page == "calculator":
-    col1, col2, col3 = st.columns([1, 1, 1])
+                    # === Reorder Columns ===
+                    correct_column_order = [
+                        'Model_Year', 'Electric_Range', 'County_freq', 'Electric_Utility_freq',
+                        'Legislative_District_freq', 'City_freq',
+                        # ... your full list continues
+                        'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan'
+                    ]
+                    for col in correct_column_order:
+                        if col not in input_df.columns:
+                            raise KeyError(f"Missing column: {col}")
+                    input_df = input_df[correct_column_order]
 
-    with col2:
-        if st.button("Estimate"):
-            predicted_price = model.predict(input_df)[0]
-            st.subheader("💰 Estimated Price:")
-            st.success(f"${predicted_price * 1000:,.2f}")
-            
-            # Add some space at the bottom
-            st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
+                except KeyError as e:
+                    st.error(f"❌ Column error: {e}")
+                except Exception as e:
+                    st.error(f"⚠️ Unexpected error: {e}")
 
-# Add footer
-st.markdown("""
-<div style="background-color: #1a1a1a; padding: 20px; text-align: center; margin-top: 30px; border-top: 1px solid #333;">
-    <p>Car Price Analysis & Prediction App © 2025</p>
-    <p style="font-size: 12px; color: #888;">Powered by Machine Learning</p>
-</div>
-""", unsafe_allow_html=True)
+                # === Predict Price Only on Calculator Page ===
+                if current_page == "calculator":
+                    col1, col2, col3 = st.columns([1, 1, 1])
+                    with col2:
+                        if st.button("Estimate"):
+                            predicted_price = model.predict(input_df)[0]
+                            st.subheader("💰 Estimated Price:")
+                            st.success(f"${predicted_price * 1000:,.2f}")
+                            st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
