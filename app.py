@@ -5,6 +5,7 @@ import numpy as np
 import joblib 
 from pathlib import Path
 import gzip
+from sklearn.preprocessing import StandardScalerfrom,OneHotEncoder, MinMaxScaler
 
 # === PAGE SETUP ===
 st.set_page_config(layout="wide")
