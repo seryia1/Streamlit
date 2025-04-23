@@ -421,63 +421,63 @@ with main_container:
             
             # Create input DataFrame for prediction
             if st.button("Estimate Price", type="primary"):
-                # Create raw input DataFrame
-                input_df = pd.DataFrame({
-                    'Make': [make], 'Model': [model_car], 'Model_Year': [model_year],
-                    'Electric_Vehicle_Type': [ev_type],
-                    'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility': [cafv],
-                    'Electric_Range': [electric_range], 'County': [county],
-                    'Electric_Utility': [utility], 'Legislative_District': [district], 'City': [city]
-                })
-                
-                try:
-                     # === Frequency Encoding ===
-                    for col in freq_cols:
-                        mapping = df[col].value_counts().to_dict()
-                        input_df[col + '_freq'] = input_df[col].map(mapping).fillna(0)
+            # Create raw input DataFrame
+            input_df = pd.DataFrame({
+            'Make': [make],
+            'Model': [model_car],
+            'Model_Year': [model_year],
+            'Electric_Vehicle_Type': [ev_type],
+            'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility': [cafv],
+            'Electric_Range': [electric_range],
+            'County': [county],
+            'Electric_Utility': [utility],
+            'Legislative_District': [district],
+            'City': [city]
+         })
 
-                    freq_scaled = MinMaxScaler()
-                    input_df[[col + '_freq' for col in freq_cols]] = freq_scaled.fit_transform(input_df[[col + '_freq' for col in freq_cols]])
-                    input_df.drop(columns=freq_cols, inplace=True)
+    # === Frequency Encoding ===
+             for col in freq_cols:
+                 mapping = df[col].value_counts().to_dict()
+                 input_df[col + '_freq'] = input_df[col].map(mapping).fillna(0)
 
-                    # === One-Hot Encoding ===
-                    encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
-                    encoded_array = encoder.fit(df[onehot_cols]).transform(input_df[onehot_cols])
-                    encoded_df = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(onehot_cols))
+             freq_scaled = MinMaxScaler()
+             input_df[[col + '_freq' for col in freq_cols]] = freq_scaled.fit_transform(
+             input_df[[col + '_freq' for col in freq_cols]]
+    )
+             input_df.drop(columns=freq_cols, inplace=True)
 
-                    input_df = input_df.drop(columns=onehot_cols).reset_index(drop=True)
-                    encoded_df = encoded_df.reset_index(drop=True)
-                    input_df = pd.concat([input_df, encoded_df], axis=1)
+    # === One-Hot Encoding ===
+             encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+             encoded_array = encoder.fit(df[onehot_cols]).transform(input_df[onehot_cols])
+             encoded_df = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(onehot_cols))
 
-                    # === Scaling ===
-                    scaler = StandardScaler()
-                    input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
+             input_df = input_df.drop(columns=onehot_cols).reset_index(drop=True)
+             encoded_df = encoded_df.reset_index(drop=True)
+             input_df = pd.concat([input_df, encoded_df], axis=1)
 
-                    # === Reorder Columns ===
-                    correct_column_order = [
-                        'Model_Year', 'Electric_Range', 'County_freq', 'Electric_Utility_freq',
-                        'Legislative_District_freq', 'City_freq',
-                        # ... your full list continues
-                        'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan'
-                    ]
-    # === Ensure column alignment for prediction ===
-try:
-    for col in correct_column_order:
-        if col not in input_df.columns:
-            raise KeyError(f"Missing column: {col}")
-    input_df = input_df[correct_column_order]
+    # === Scaling ===
+             scaler = StandardScaler()
+             input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
 
-except KeyError as e:
-    st.error(f"❌ Column error: {e}")
-except Exception as e:
-    st.error(f"⚠️ Unexpected error: {e}")
+    # === Reorder Columns ===
+    correct_column_order = [
+        'Model_Year', 'Electric_Range', 'County_freq', 'Electric_Utility_freq',
+        'Legislative_District_freq', 'City_freq',
+        # ... your full list of columns continues ...
+        'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan'
+    ]
 
-# === Predict Price ===
-if current_page == "calculator":
-    col1, col2, col3 = st.columns([1, 1, 1])
+             for col in correct_column_order:
+                 if col not in input_df.columns:
+                     input_df[col] = 0
 
-    with col2:
-        if st.button("Estimate"):
-            predicted_price = model.predict(input_df)[0]
-            st.subheader("💰 Estimated Price:")
-            st.success(f"${predicted_price * 1000:,.2f}")
+             input_df = input_df[correct_column_order]
+
+    # === Predict Price ===
+             if current_page == "calculator":
+                 col1, col2, col3 = st.columns([1, 1, 1])
+
+             with col2:
+                 predicted_price = model.predict(input_df)[0]
+                 st.subheader("💰 Estimated Price:")
+                 st.success(f"${predicted_price * 1000:,.2f}")
