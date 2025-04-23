@@ -585,10 +585,10 @@ with main_container:
     'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_Not eligible due to low battery range',
     'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan']  # Replace with your full list as shown earlier
 
-        for col in correct_column_order:
-            if col not in input_df.columns:
-                input_df[col] = 0
-                input_df = input_df[correct_column_order]
+                for col in correct_column_order:
+                    if col not in input_df.columns:
+                        input_df[col] = 0
+                        input_df = input_df[correct_column_order]
                     
   # === Predict Price ===
 if current_page == "calculator":
