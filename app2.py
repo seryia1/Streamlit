@@ -982,6 +982,8 @@ with main_container:
                 </div>
                 """, unsafe_allow_html=True)
                 
+                # Create input DataFrame for prediction
+            if st.button("Estimate Price", type="primary"):
                 try:
                     # Create raw input DataFrame
                     input_df = pd.DataFrame({
@@ -1044,14 +1046,24 @@ with main_container:
 
                     # === Predict Price ===
                     if model is not None:
-                        predicted_price = model.predict(prediction_df)[0] * 1000
+                        predicted_price = model.predict(prediction_df)[0]
+                        st.markdown(f"""
+                        <div class="prediction-result">
+                            <h3>💰 Estimated Price:</h3>
+                            <p style="font-size: 32px; color: #e11d48;">${predicted_price * 1000:,.2f}</p>
+                        </div>
+                        """, unsafe_allow_html=True)
                     else:
-                        # Demo mode - generate a realistic price based on inputs
-                        base_price = 30000
-                        year_factor = (model_year - 2015) * 1500 if model_year > 2015 else 0
-                        range_factor = electric_range * 50
-                        make_factor = 10000 if make == "TESLA" else (5000 if make in ["BMW", "AUDI", "PORSCHE"] else 0)
-                        predicted_price = base_price + year_factor + range_factor + make_factor
+                        st.warning("Model not loaded. This is a demonstration of the UI only.")
+                        st.markdown(f"""
+                        <div class="prediction-result">
+                            <h3>💰 Estimated Price (Demo):</h3>
+                            <p style="font-size: 32px; color: #e11d48;">$35,750.00</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                except Exception as e:
+                    st.error(f"Error during prediction: {e}")
+                    st.info("Please check your input data and try again.")
                     # Display prediction with improved styling
 st.markdown(f"""
 <div class="prediction-result">
