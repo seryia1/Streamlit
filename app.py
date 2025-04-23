@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import joblib 
 from pathlib import Path
-
+import urllib.request
 
 # === PAGE SETUP ===
 st.set_page_config(layout="wide")
