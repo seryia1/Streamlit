@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import pickle 
 from pathlib import Path
-import urllib.request
+import gzip
 
 # === PAGE SETUP ===
 st.set_page_config(layout="wide")
@@ -118,7 +118,7 @@ elif current_page == "calculator":
      
     
     
-    with open('svr_model.pkl', "rb") as f:
+    with gzip.open('svr_model.pkl', "rb") as f:
         model = pickle.load(f)
 
 
