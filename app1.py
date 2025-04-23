@@ -421,63 +421,89 @@ with main_container:
             
             # Create input DataFrame for prediction
             if st.button("Estimate Price", type="primary"):
-            # Create raw input DataFrame
-            input_df = pd.DataFrame({
-            'Make': [make],
-            'Model': [model_car],
-            'Model_Year': [model_year],
-            'Electric_Vehicle_Type': [ev_type],
-            'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility': [cafv],
-            'Electric_Range': [electric_range],
-            'County': [county],
-            'Electric_Utility': [utility],
-            'Legislative_District': [district],
-            'City': [city]
-         })
+                try:
+                    # Create raw input DataFrame
+                    input_df = pd.DataFrame({
+                        'Make': [make],
+                        'Model': [model_car],
+                        'Model_Year': [model_year],
+                        'Electric_Vehicle_Type': [ev_type],
+                        'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility': [cafv],
+                        'Electric_Range': [electric_range],
+                        'County': [county],
+                        'Electric_Utility': [utility],
+                        'Legislative_District': [district],
+                        'City': [city]
+                    })
 
-    # === Frequency Encoding ===
-             for col in freq_cols:
-                 mapping = df[col].value_counts().to_dict()
-                 input_df[col + '_freq'] = input_df[col].map(mapping).fillna(0)
+                    # === Frequency Encoding ===
+                    for col in freq_cols:
+                        mapping = df[col].value_counts().to_dict()
+                        input_df[col + '_freq'] = input_df[col].map(mapping).fillna(0)
 
-             freq_scaled = MinMaxScaler()
-             input_df[[col + '_freq' for col in freq_cols]] = freq_scaled.fit_transform(
-             input_df[[col + '_freq' for col in freq_cols]]
-    )
-             input_df.drop(columns=freq_cols, inplace=True)
+                    freq_scaled = MinMaxScaler()
+                    input_df[[col + '_freq' for col in freq_cols]] = freq_scaled.fit_transform(
+                        input_df[[col + '_freq' for col in freq_cols]]
+                    )
+                    input_df.drop(columns=freq_cols, inplace=True)
 
-    # === One-Hot Encoding ===
-             encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
-             encoded_array = encoder.fit(df[onehot_cols]).transform(input_df[onehot_cols])
-             encoded_df = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(onehot_cols))
+                    # === One-Hot Encoding ===
+                    encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+                    encoded_array = encoder.fit(df[onehot_cols]).transform(input_df[onehot_cols])
+                    encoded_df = pd.DataFrame(encoded_array, columns=encoder.get_feature_names_out(onehot_cols))
 
-             input_df = input_df.drop(columns=onehot_cols).reset_index(drop=True)
-             encoded_df = encoded_df.reset_index(drop=True)
-             input_df = pd.concat([input_df, encoded_df], axis=1)
+                    input_df = input_df.drop(columns=onehot_cols).reset_index(drop=True)
+                    encoded_df = encoded_df.reset_index(drop=True)
+                    input_df = pd.concat([input_df, encoded_df], axis=1)
 
-    # === Scaling ===
-             scaler = StandardScaler()
-             input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
+                    # === Scaling ===
+                    scaler = StandardScaler()
+                    input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
 
-    # === Reorder Columns ===
-    correct_column_order = [
-        'Model_Year', 'Electric_Range', 'County_freq', 'Electric_Utility_freq',
-        'Legislative_District_freq', 'City_freq',
-        # ... your full list of columns continues ...
-        'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan'
-    ]
+                    # === Reorder Columns ===
+                    correct_column_order = [
+                        'Model_Year', 'Electric_Range', 'County_freq', 'Electric_Utility_freq',
+                        'Legislative_District_freq', 'City_freq'
+                    ]
+                    
+                    # Add one-hot encoded columns
+                    for col in encoded_df.columns:
+                        correct_column_order.append(col)
 
-             for col in correct_column_order:
-                 if col not in input_df.columns:
-                     input_df[col] = 0
+                    # Ensure all columns exist
+                    for col in correct_column_order:
+                        if col not in input_df.columns:
+                            input_df[col] = 0
 
-             input_df = input_df[correct_column_order]
+                    # Select only columns that exist in the input_df
+                    valid_columns = [col for col in correct_column_order if col in input_df.columns]
+                    input_df = input_df[valid_columns]
 
-    # === Predict Price ===
-             if current_page == "calculator":
-                 col1, col2, col3 = st.columns([1, 1, 1])
+                    # === Predict Price ===
+                    if model is not None:
+                        predicted_price = model.predict(input_df)[0]
+                        st.markdown(f"""
+                        <div class="prediction-result">
+                            <h3>💰 Estimated Price:</h3>
+                            <p style="font-size: 32px; color: #e11d48;">${predicted_price * 1000:,.2f}</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.warning("Model not loaded. This is a demonstration of the UI only.")
+                        st.markdown(f"""
+                        <div class="prediction-result">
+                            <h3>💰 Estimated Price (Demo):</h3>
+                            <p style="font-size: 32px; color: #e11d48;">$35,750.00</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                except Exception as e:
+                    st.error(f"Error during prediction: {e}")
+                    st.info("Please check your input data and try again.")
 
-             with col2:
-                 predicted_price = model.predict(input_df)[0]
-                 st.subheader("💰 Estimated Price:")
-                 st.success(f"${predicted_price * 1000:,.2f}")
+# Add footer
+st.markdown("""
+<div style="background-color: #1a1a1a; padding: 20px; text-align: center; margin-top: 30px; border-top: 1px solid #333;">
+    <p>Car Price Analysis & Prediction App © 2025</p>
+    <p style="font-size: 12px; color: #888;">Powered by Machine Learning</p>
+</div>
+""", unsafe_allow_html=True)
