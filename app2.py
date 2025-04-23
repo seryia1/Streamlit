@@ -1052,9 +1052,13 @@ with main_container:
                         range_factor = electric_range * 50
                         make_factor = 10000 if make == "TESLA" else (5000 if make in ["BMW", "AUDI", "PORSCHE"] else 0)
                         predicted_price = base_price + year_factor + range_factor + make_factor
-                    
                     # Display prediction with improved styling
                     st.markdown(f"""
-                    <div class="prediction-result">
-                        <h3>💰 Estimated Price:</h3>
-                        <div style="display
+<div class="prediction-result">
+    <h3>💰 Estimated Price:</h3>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="price-tag">${predicted_price:,.2f}</div>
+        <div style="font-size: 14px; color: #888;">Estimated market value</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
