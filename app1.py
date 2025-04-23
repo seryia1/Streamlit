@@ -470,12 +470,12 @@ with main_container:
                 except Exception as e:
                     st.error(f"⚠️ Unexpected error: {e}")
 
-                # === Predict Price Only on Calculator Page ===
+                # === Predict Price (only if on calculator page) ===
                 if current_page == "calculator":
                     col1, col2, col3 = st.columns([1, 1, 1])
+
                     with col2:
                         if st.button("Estimate"):
                             predicted_price = model.predict(input_df)[0]
                             st.subheader("💰 Estimated Price:")
                             st.success(f"${predicted_price * 1000:,.2f}")
-                            st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
