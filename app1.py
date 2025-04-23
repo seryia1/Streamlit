@@ -590,28 +590,15 @@ with main_container:
                 input_df[col] = 0
                 input_df = input_df[correct_column_order]
                     
-                    if model is not None:
-                        # Make prediction
-                        predicted_price = model.predict(input_df)[0]
-                        
-                        # Display prediction
-                        st.markdown(f"""
-                        <div class="prediction-result">
-                            <h3>💰 Estimated Price:</h3>
-                            <p style="font-size: 32px; color: #e11d48;">${predicted_price * 1000:,.2f}</p>
-                        </div>
-                        """, unsafe_allow_html=True)
-                    else:
-                        st.warning("Model not loaded. This is a demonstration of the UI only.")
-                        st.markdown(f"""
-                        <div class="prediction-result">
-                            <h3>💰 Estimated Price (Demo):</h3>
-                            <p style="font-size: 32px; color: #e11d48;">$35,750.00</p>
-                        </div>
-                        """, unsafe_allow_html=True)
-                except Exception as e:
-                    st.error(f"Error during prediction: {e}")
-                    st.info("Please check your input data and try again.")
+  # === Predict Price ===
+if current_page == "calculator":
+    col1, col2, col3 = st.columns([1, 1, 1])
+
+    with col2:
+        if st.button("Estimate"):
+            predicted_price = model.predict(input_df)[0]
+            st.subheader("💰 Estimated Price:")
+            st.success(f"${predicted_price * 1000:,.2f}")
             
             # Add some space at the bottom
             st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
