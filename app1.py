@@ -460,22 +460,24 @@ with main_container:
                         # ... your full list continues
                         'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan'
                     ]
-                    for col in correct_column_order:
-                        if col not in input_df.columns:
-                            raise KeyError(f"Missing column: {col}")
-                    input_df = input_df[correct_column_order]
+    # === Ensure column alignment for prediction ===
+try:
+    for col in correct_column_order:
+        if col not in input_df.columns:
+            raise KeyError(f"Missing column: {col}")
+    input_df = input_df[correct_column_order]
 
-                except KeyError as e:
-                    st.error(f"❌ Column error: {e}")
-                except Exception as e:
-                    st.error(f"⚠️ Unexpected error: {e}")
+except KeyError as e:
+    st.error(f"❌ Column error: {e}")
+except Exception as e:
+    st.error(f"⚠️ Unexpected error: {e}")
 
-                # === Predict Price (only if on calculator page) ===
-                if current_page == "calculator":
-                    col1, col2, col3 = st.columns([1, 1, 1])
+# === Predict Price ===
+if current_page == "calculator":
+    col1, col2, col3 = st.columns([1, 1, 1])
 
-                    with col2:
-                        if st.button("Estimate"):
-                            predicted_price = model.predict(input_df)[0]
-                            st.subheader("💰 Estimated Price:")
-                            st.success(f"${predicted_price * 1000:,.2f}")
+    with col2:
+        if st.button("Estimate"):
+            predicted_price = model.predict(input_df)[0]
+            st.subheader("💰 Estimated Price:")
+            st.success(f"${predicted_price * 1000:,.2f}")
