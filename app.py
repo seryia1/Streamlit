@@ -117,7 +117,7 @@ elif current_page == "calculator":
     
      
 
-    model_path = Path(__file__).parent / "svr_model.pkl"
+    model_path = 'svr_model.pkl'              
     with open(model_path, "rb") as f:
         model = pk.load(f)
 
