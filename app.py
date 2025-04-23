@@ -119,7 +119,7 @@ elif current_page == "calculator":
     
     
     with open('svr_model.pkl', "rb") as f:
-        model = pk.load(f)
+        model = pickle.load(f)
 
 
     df.columns = df.columns.str.replace(' ', '_')
