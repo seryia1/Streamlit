@@ -444,7 +444,7 @@ with main_container:
             """, unsafe_allow_html=True)
             
             # Car image
-            st.image("https://www.neodrift.in/cdn/shop/articles/best-resale-cars-featured.jpg?v=1722222661", use_column_width  use_column_width=True)
+            st.image("https://www.neodrift.in/cdn/shop/articles/best-resale-cars-featured.jpg?v=1722222661", use_column_width=True)
             
             # Create input DataFrame for prediction
             if st.button("Estimate Price", type="primary"):
