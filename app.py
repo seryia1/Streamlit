@@ -105,8 +105,8 @@ elif current_page == "calculator":
     st.markdown("# 🧮 Calculator")
 
     # === Load Data and Model ===
-    df = pd.read_csv('C:/Users/Utilisteur/Downloads/Electric_cars_dataset.csv')
-    model = joblib.load(r"C:\Users\Utilisteur\Downloads\svr_model.pkl")
+    df = pd.read_csv('Electric_cars_dataset.csv')
+    model = joblib.load("svr_model.pkl")
 
     df.columns = df.columns.str.replace(' ', '_')
 
