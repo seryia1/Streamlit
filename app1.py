@@ -452,7 +452,7 @@ with main_container:
                     input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
                     
                      # === Reorder Columns ===
-        correct_column_order = ['Model_Year','Electric_Range','County_freq','Electric_Utility_freq','Legislative_District_freq','City_freq','Make_AUDI','Make_AZURE DYNAMICS',
+                    correct_column_order = ['Model_Year','Electric_Range','County_freq','Electric_Utility_freq','Legislative_District_freq','City_freq','Make_AUDI','Make_AZURE DYNAMICS',
     'Make_BENTLEY',
     'Make_BMW',
     'Make_CADILLAC',
