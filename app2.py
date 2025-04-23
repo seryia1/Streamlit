@@ -903,17 +903,12 @@ with main_container:
         
         # Summary with improved styling
         st.markdown("""
-        <div class="card">
-            <h3>💡 TL;DR – Summary</h3>
-            <p style="font-size: 1.1rem; line-height: 1.6;">Our model is very accurate at predicting the resale price of a car based on its characteristics. It has been fine-tuned and tested for performance, and the final version predicts car prices with over 98% accuracy, and an average error of only 2.42.</p>
-            <p style="font-size: 1.1rem; line-height: 1.6;">Whether you're buying or selling, this tool gives you trusted price estimates based on real data and advanced modeling.</p>
-            
-            <div style="background-color: #2a2a2a; border-radius: 10px; padding: 15px; margin-top: 20px; border-left: 4px solid #e11d48;">
-                <h4 style="margin-top: 0;">Pro Tip</h4>
-                <p>For the most accurate predictions, make sure to provide accurate information about your vehicle, especially the electric range and model year, as these have the highest impact on price estimation.</p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+<div style="background-color: #2a2a2a; border-radius: 10px; padding: 15px; margin-top: 20px; border-left: 4px solid #e11d48;">
+    <h4 style="margin-top: 0; color: white;">Pro Tip</h4>
+    <p style="color: #dddddd;">For the most accurate predictions, make sure to provide accurate information about your vehicle, especially the electric range and model year, as these have the highest impact on price estimation.</p>
+</div>
+""", unsafe_allow_html=True)
+
     
     # === PREDICTION TAB ===
     with tab3:
