@@ -116,7 +116,7 @@ elif current_page == "calculator":
     df = pd.read_csv('Electric_cars_dataset.csv')
     
      
-
+    
     
     with open('svr_model.pkl', "rb") as f:
         model = pk.load(f)
