@@ -41,7 +41,7 @@ st.markdown("""
 
 
 # === GET PAGE FROM URL ===
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 current_page = query_params.get("page", ["overview"])[0]
 
 
