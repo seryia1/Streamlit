@@ -451,8 +451,8 @@ with main_container:
                     scaler = StandardScaler()
                     input_df[scale_cols] = scaler.fit(df[scale_cols]).transform(input_df[scale_cols])
                     
-                    # === Reorder Columns ===
-                    correct_column_order = ['Model_Year','Electric_Range','County_freq','Electric_Utility_freq','Legislative_District_freq','City_freq','Make_AUDI','Make_AZURE DYNAMICS',
+                     # === Reorder Columns ===
+        correct_column_order = ['Model_Year','Electric_Range','County_freq','Electric_Utility_freq','Legislative_District_freq','City_freq','Make_AUDI','Make_AZURE DYNAMICS',
     'Make_BENTLEY',
     'Make_BMW',
     'Make_CADILLAC',
@@ -585,23 +585,10 @@ with main_container:
     'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_Not eligible due to low battery range',
     'Clean_Alternative_Fuel_Vehicle_(CAFV)_Eligibility_nan']  # Replace with your full list as shown earlier
 
-                    for col in correct_column_order:
-                        if col not in input_df.columns:
-                            input_df[col] = 0
-                            input_df = input_df[correct_column_order]
-                    
-                    # Add one-hot encoded columns
-                    for col in encoded_df.columns:
-                        correct_column_order.append(col)
-                    
-                    # Ensure all columns exist
-                    for col in correct_column_order:
-                        if col not in input_df.columns:
-                            input_df[col] = 0
-                    
-                    # Select only columns that exist in the input_df
-                    valid_columns = [col for col in correct_column_order if col in input_df.columns]
-                    input_df = input_df[valid_columns]
+        for col in correct_column_order:
+            if col not in input_df.columns:
+                input_df[col] = 0
+                input_df = input_df[correct_column_order]
                     
                     if model is not None:
                         # Make prediction
