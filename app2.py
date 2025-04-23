@@ -11,6 +11,9 @@ from datetime import datetime
 
 # === PAGE SETUP ===
 st.set_page_config(layout="wide", page_title="Car Price Analysis & Prediction App", page_icon="🚗")
+# === GET PAGE FROM URL ===
+query_params = st.experimental_get_query_params()
+current_page = query_params.get("page", ["overview"])[0]
 
 # === CUSTOM CSS FOR DARK THEME WITH IMPROVEMENTS ===
 st.markdown("""
