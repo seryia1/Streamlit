@@ -1163,19 +1163,24 @@ with main_container:
                 input_df[col] = 0
         input_df = input_df[correct_column_order]
 
-# === Predict Price ===
-# === Predict Price (Only show on Calculator page) ===
-if current_page == "Prediction":
+
+
+# === Prediction Tab Content ===
+with tab3:
+    st.header("🔮 Price Prediction Tool")
+
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col2:
         if st.button("Estimate"):
             try:
+                # Ensure correct column order for prediction
                 for col in correct_column_order:
                     if col not in input_df.columns:
                         input_df[col] = 0
                 input_df = input_df[correct_column_order]
 
+                # Predict and display the price
                 if model is not None:
                     predicted_price = model.predict(input_df)[0]
                     st.markdown(f"""
