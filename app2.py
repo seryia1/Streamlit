@@ -682,28 +682,32 @@ with main_container:
             <h2>Dataset Overview</h2>
             <p>For training our model, we worked with a dataset containing detailed information about Battery Electric Vehicles (BEVs) and Plug-in Hybrid Electric Vehicles (PHEVs) registered with the Washington State Department of Licensing (DOL).</p>
             
-            <div class="divider"></div>
             
-            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                <div style="text-align: center; flex: 1;">
-                    <h3 style="font-size: 2rem; margin: 0;">1,500+</h3>
-                    <p style="color: #888;">Vehicles</p>
-                </div>
-                <div style="text-align: center; flex: 1;">
-                    <h3 style="font-size: 2rem; margin: 0;">35+</h3>
-                    <p style="color: #888;">Makes</p>
-                </div>
-                <div style="text-align: center; flex: 1;">
-                    <h3 style="font-size: 2rem; margin: 0;">120+</h3>
-                    <p style="color: #888;">Models</p>
-                </div>
-                <div style="text-align: center; flex: 1;">
-                    <h3 style="font-size: 2rem; margin: 0;">10+</h3>
-                    <p style="color: #888;">Features</p>
-                </div>
-            </div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown("""
+<div class="divider"></div>
+
+<div style="display: flex; justify-content: space-between; margin-top: 15px;">
+    <div style="text-align: center; flex: 1;">
+        <h3 style="font-size: 2rem; margin: 0;">1,500+</h3>
+        <p style="color: #888;">Vehicles</p>
+    </div>
+    <div style="text-align: center; flex: 1;">
+        <h3 style="font-size: 2rem; margin: 0;">35+</h3>
+        <p style="color: #888;">Makes</p>
+    </div>
+    <div style="text-align: center; flex: 1;">
+        <h3 style="font-size: 2rem; margin: 0;">120+</h3>
+        <p style="color: #888;">Models</p>
+    </div>
+    <div style="text-align: center; flex: 1;">
+        <h3 style="font-size: 2rem; margin: 0;">10+</h3>
+        <p style="color: #888;">Features</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
         
         # Feature description table with improved styling
         st.markdown("""
