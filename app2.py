@@ -1165,7 +1165,7 @@ with main_container:
 
 # === Predict Price ===
 # === Predict Price (Only show on Calculator page) ===
-if current_page == "calculator":
+if current_page == "Prediction":
     col1, col2, col3 = st.columns([1, 1, 1])
 
     with col2:
