@@ -900,7 +900,16 @@ with main_container:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
+        # Summary with improved styling
+        st.markdown("""
+        <div class="card">
+            <h3>💡 TL;DR – Summary</h3>
+            <p style="font-size: 1.1rem; line-height: 1.6;">Our model is very accurate at predicting the resale price of a car based on its characteristics. It has been fine-tuned and tested for performance, and the final version predicts car prices with over 98% accuracy, and an average error of only 2.42.</p>
+            <p style="font-size: 1.1rem; line-height: 1.6;">Whether you're buying or selling, this tool gives you trusted price estimates based on real data and advanced modeling.</p>
+            
+            
+        </div>
+        """, unsafe_allow_html=True)
         # Summary with improved styling
         st.markdown("""
 <div style="background-color: #2a2a2a; border-radius: 10px; padding: 15px; margin-top: 20px; border-left: 4px solid #e11d48;">
